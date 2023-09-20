@@ -17,9 +17,7 @@ public class Racun  {
     public int OrgId {get; set;}
     [ForeignKey("stranka_id")]
     public int StrankaId { get; set; }
-    [ForeignKey("artikel_id")]
-    public int ArtikelId { get; set; }
-    public required Artikel Artikel {get; set;}
+    public virtual ICollection<RacunVrstica> LineItems { get; set; } // Add this navigation property
 
     public required Stranka Stranka { get; set; }
     public required Organizacija Organizacija {get; set;}
