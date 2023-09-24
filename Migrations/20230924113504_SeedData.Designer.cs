@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace InvoiceApiProject.Migrations
 {
     [DbContext(typeof(InvoiceApiProjectContext))]
-    [Migration("20230919110032_InitialCreate")]
-    partial class InitialCreate
+    [Migration("20230924113504_SeedData")]
+    partial class SeedData
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -81,18 +81,17 @@ namespace InvoiceApiProject.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int>("ArtikelId")
-                        .HasColumnType("int");
-
                     b.Property<DateTime>("DateOfCreation")
                         .HasColumnType("datetime2")
                         .HasColumnName("date_of_creation");
 
                     b.Property<int>("OrgId")
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasColumnName("org_id");
 
                     b.Property<int>("StrankaId")
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasColumnName("stranka_id");
 
                     b.Property<float>("Znesek")
                         .HasColumnType("real")
@@ -100,13 +99,41 @@ namespace InvoiceApiProject.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ArtikelId");
-
                     b.HasIndex("OrgId");
 
                     b.HasIndex("StrankaId");
 
                     b.ToTable("racuni_table");
+                });
+
+            modelBuilder.Entity("RacunVrstica", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasColumnName("id");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("ArtikelId")
+                        .HasColumnType("int")
+                        .HasColumnName("article_id");
+
+                    b.Property<int>("Kolicina")
+                        .HasColumnType("int")
+                        .HasColumnName("quantity");
+
+                    b.Property<int>("RacunId")
+                        .HasColumnType("int")
+                        .HasColumnName("invoice_id");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ArtikelId");
+
+                    b.HasIndex("RacunId");
+
+                    b.ToTable("line_items");
                 });
 
             modelBuilder.Entity("Stranka", b =>
@@ -135,12 +162,6 @@ namespace InvoiceApiProject.Migrations
 
             modelBuilder.Entity("InvoiceApiProject.Models.Racun", b =>
                 {
-                    b.HasOne("InvoiceApiProject.Models.Artikel", "Artikel")
-                        .WithMany()
-                        .HasForeignKey("ArtikelId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("InvoiceApiProject.Models.Organizacija", "Organizacija")
                         .WithMany()
                         .HasForeignKey("OrgId")
@@ -153,11 +174,33 @@ namespace InvoiceApiProject.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Artikel");
-
                     b.Navigation("Organizacija");
 
                     b.Navigation("Stranka");
+                });
+
+            modelBuilder.Entity("RacunVrstica", b =>
+                {
+                    b.HasOne("InvoiceApiProject.Models.Artikel", "Artikel")
+                        .WithMany()
+                        .HasForeignKey("ArtikelId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("InvoiceApiProject.Models.Racun", "Racun")
+                        .WithMany("LineItems")
+                        .HasForeignKey("RacunId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Artikel");
+
+                    b.Navigation("Racun");
+                });
+
+            modelBuilder.Entity("InvoiceApiProject.Models.Racun", b =>
+                {
+                    b.Navigation("LineItems");
                 });
 #pragma warning restore 612, 618
         }

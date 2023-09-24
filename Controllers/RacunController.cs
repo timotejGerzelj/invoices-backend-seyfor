@@ -24,12 +24,12 @@ namespace InvoiceApiProject.Controllers
           {
               return NotFound();
           }
-            var racuni = await _context.Racuni.Include(r => r.Stranka)
+            var racuni = await _context.Racuni
+            .Include(r => r.Stranka)
             .Include(r => r.Organizacija)
             .ToListAsync();
 
             return racuni;
-
         }
 
         // GET: api/Racun/5
@@ -83,18 +83,43 @@ namespace InvoiceApiProject.Controllers
 
         // POST: api/Racun
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPost]
-        public async Task<ActionResult<Racun>> PostRacun(Racun racun)
-        {
-          if (_context.Racuni == null)
-          {
-              return Problem("Entity set 'AppContext.Racuni'  is null.");
-          }
-            _context.Racuni.Add(racun);
-            await _context.SaveChangesAsync();
+[HttpPost]
+public async Task<ActionResult<Racun>> PostRacun(Racun racun)
+{
+    if (_context.Racuni == null)
+    {
+        return Problem("Entity set 'AppContext.Racuni' is null.");
+    }
 
-            return CreatedAtAction("GetRacun", new { id = racun.Id }, racun);
-        }
+    _context.Racuni.Add(racun);
+
+    await _context.SaveChangesAsync();
+    return racun;
+}
+
+// GET: api/Racun/5/RacunVrstica
+[HttpGet("{id}/RacunVrstica")]
+public async Task<ActionResult<IEnumerable<RacunVrstica>>> GetRacunLineItemById(int id)
+{
+    if (_context.Racuni == null)
+    {
+        return NotFound();
+    }
+
+    var racun = await _context.Racuni
+        .Include(r => r.LineItems) // Include the related line items
+            .ThenInclude(li => li.Artikel) // Include the Artikel for each LineItem
+        .FirstOrDefaultAsync(r => r.Id == id);
+    if (racun == null)
+    {
+        return NotFound();
+    }
+
+    var lineItems = racun.LineItems;
+
+    return lineItems.ToList();
+}
+
 
         // DELETE: api/Racun/5
         [HttpDelete("{id}")]

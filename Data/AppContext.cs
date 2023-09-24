@@ -9,8 +9,8 @@ public class InvoiceApiProjectContext : DbContext
     {}
 
     public DbSet<Racun> Racuni { get; set; } = null!;
-    public DbSet<Stranka> Stranke {get;} = null!;
-    public DbSet<Artikel> Artikli { get; } = null!;
+    public DbSet<Stranka> Stranke {get; set;} = null!;
+    public DbSet<Artikel> Artikli { get; set;} = null!;
     public DbSet<Organizacija> Organizacije { get; } = null!;
     public DbSet<RacunVrstica> LineItems { get; set; } = null!;
 

@@ -13,12 +13,14 @@ public class Racun  {
     [Required(ErrorMessage = "znesek je obvezen.")]
     [Column("znesek")]
     public required float Znesek { get; set; }
-    [ForeignKey("org_id")]
+    [ForeignKey("OrgId")]
+    [Column("org_id")]
     public int OrgId {get; set;}
-    [ForeignKey("stranka_id")]
+    [ForeignKey("Stranka")]
+    [Column("stranka_id")]
     public int StrankaId { get; set; }
     public virtual ICollection<RacunVrstica> LineItems { get; set; } // Add this navigation property
 
-    public required Stranka Stranka { get; set; }
-    public required Organizacija Organizacija {get; set;}
+    public Stranka? Stranka { get; set; }
+    public Organizacija? Organizacija {get; set;}
 }

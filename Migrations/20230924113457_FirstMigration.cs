@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace InvoiceApiProject.Migrations
 {
     /// <inheritdoc />
-    public partial class InitialCreate : Migration
+    public partial class FirstMigration : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -61,57 +61,85 @@ namespace InvoiceApiProject.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     date_of_creation = table.Column<DateTime>(type: "datetime2", nullable: false),
                     znesek = table.Column<float>(type: "real", nullable: false),
-                    OrgId = table.Column<int>(type: "int", nullable: false),
-                    StrankaId = table.Column<int>(type: "int", nullable: false),
-                    ArtikelId = table.Column<int>(type: "int", nullable: false)
+                    org_id = table.Column<int>(type: "int", nullable: false),
+                    stranka_id = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_racuni_table", x => x.id);
                     table.ForeignKey(
-                        name: "FK_racuni_table_artikli_table_ArtikelId",
-                        column: x => x.ArtikelId,
-                        principalTable: "artikli_table",
-                        principalColumn: "id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_racuni_table_organisation_table_OrgId",
-                        column: x => x.OrgId,
+                        name: "FK_racuni_table_organisation_table_org_id",
+                        column: x => x.org_id,
                         principalTable: "organisation_table",
                         principalColumn: "id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_racuni_table_stranka_table_StrankaId",
-                        column: x => x.StrankaId,
+                        name: "FK_racuni_table_stranka_table_stranka_id",
+                        column: x => x.stranka_id,
                         principalTable: "stranka_table",
                         principalColumn: "id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
-            migrationBuilder.CreateIndex(
-                name: "IX_racuni_table_ArtikelId",
-                table: "racuni_table",
-                column: "ArtikelId");
+            migrationBuilder.CreateTable(
+                name: "line_items",
+                columns: table => new
+                {
+                    id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    quantity = table.Column<int>(type: "int", nullable: false),
+                    invoice_id = table.Column<int>(type: "int", nullable: false),
+                    article_id = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_line_items", x => x.id);
+                    table.ForeignKey(
+                        name: "FK_line_items_artikli_table_article_id",
+                        column: x => x.article_id,
+                        principalTable: "artikli_table",
+                        principalColumn: "id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_line_items_racuni_table_invoice_id",
+                        column: x => x.invoice_id,
+                        principalTable: "racuni_table",
+                        principalColumn: "id",
+                        onDelete: ReferentialAction.Cascade);
+                });
 
             migrationBuilder.CreateIndex(
-                name: "IX_racuni_table_OrgId",
-                table: "racuni_table",
-                column: "OrgId");
+                name: "IX_line_items_article_id",
+                table: "line_items",
+                column: "article_id");
 
             migrationBuilder.CreateIndex(
-                name: "IX_racuni_table_StrankaId",
+                name: "IX_line_items_invoice_id",
+                table: "line_items",
+                column: "invoice_id");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_racuni_table_org_id",
                 table: "racuni_table",
-                column: "StrankaId");
+                column: "org_id");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_racuni_table_stranka_id",
+                table: "racuni_table",
+                column: "stranka_id");
         }
 
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "racuni_table");
+                name: "line_items");
 
             migrationBuilder.DropTable(
                 name: "artikli_table");
+
+            migrationBuilder.DropTable(
+                name: "racuni_table");
 
             migrationBuilder.DropTable(
                 name: "organisation_table");
