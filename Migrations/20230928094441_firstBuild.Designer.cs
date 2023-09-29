@@ -11,9 +11,9 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace InvoiceApiProject.Migrations
 {
-    [DbContext(typeof(InvoiceApiProjectContext))]
-    [Migration("20230924113457_FirstMigration")]
-    partial class FirstMigration
+    [DbContext(typeof(DataContext))]
+    [Migration("20230928094441_firstBuild")]
+    partial class firstBuild
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -25,7 +25,7 @@ namespace InvoiceApiProject.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("InvoiceApiProject.Models.Artikel", b =>
+            modelBuilder.Entity("Client", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -34,21 +34,45 @@ namespace InvoiceApiProject.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<float>("Cena")
+                    b.Property<string>("Address")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)")
+                        .HasColumnName("address");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)")
+                        .HasColumnName("name");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("client_table");
+                });
+
+            modelBuilder.Entity("InvoiceApiProject.Models.Article", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasColumnName("id");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)")
+                        .HasColumnName("name");
+
+                    b.Property<float>("Price")
                         .HasColumnType("real")
-                        .HasColumnName("cena");
-
-                    b.Property<string>("Ime")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)")
-                        .HasColumnName("ime");
+                        .HasColumnName("price");
 
                     b.HasKey("Id");
 
-                    b.ToTable("artikli_table");
+                    b.ToTable("articles_table");
                 });
 
-            modelBuilder.Entity("InvoiceApiProject.Models.Organizacija", b =>
+            modelBuilder.Entity("InvoiceApiProject.Models.Invoice", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -57,29 +81,9 @@ namespace InvoiceApiProject.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<string>("Ime")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)")
-                        .HasColumnName("ime");
-
-                    b.Property<string>("Opis")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)")
-                        .HasColumnName("opis");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("organisation_table");
-                });
-
-            modelBuilder.Entity("InvoiceApiProject.Models.Racun", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
+                    b.Property<int>("ClientId")
                         .HasColumnType("int")
-                        .HasColumnName("id");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                        .HasColumnName("client_id");
 
                     b.Property<DateTime>("DateOfCreation")
                         .HasColumnType("datetime2")
@@ -89,24 +93,20 @@ namespace InvoiceApiProject.Migrations
                         .HasColumnType("int")
                         .HasColumnName("org_id");
 
-                    b.Property<int>("StrankaId")
-                        .HasColumnType("int")
-                        .HasColumnName("stranka_id");
-
-                    b.Property<float>("Znesek")
+                    b.Property<float>("Price")
                         .HasColumnType("real")
-                        .HasColumnName("znesek");
+                        .HasColumnName("price");
 
                     b.HasKey("Id");
 
+                    b.HasIndex("ClientId");
+
                     b.HasIndex("OrgId");
 
-                    b.HasIndex("StrankaId");
-
-                    b.ToTable("racuni_table");
+                    b.ToTable("invoice_table");
                 });
 
-            modelBuilder.Entity("RacunVrstica", b =>
+            modelBuilder.Entity("InvoiceApiProject.Models.Organisation", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -115,90 +115,90 @@ namespace InvoiceApiProject.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int>("ArtikelId")
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)")
+                        .HasColumnName("description");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)")
+                        .HasColumnName("name");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("organisation_table");
+                });
+
+            modelBuilder.Entity("LineItem", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasColumnName("id");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("ArticlelId")
                         .HasColumnType("int")
                         .HasColumnName("article_id");
 
-                    b.Property<int>("Kolicina")
+                    b.Property<int>("Quantity")
                         .HasColumnType("int")
                         .HasColumnName("quantity");
 
-                    b.Property<int>("RacunId")
+                    b.Property<int>("InvoiceId")
                         .HasColumnType("int")
                         .HasColumnName("invoice_id");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ArtikelId");
+                    b.HasIndex("ArticlelId");
 
-                    b.HasIndex("RacunId");
+                    b.HasIndex("InvoiceId");
 
-                    b.ToTable("line_items");
+                    b.ToTable("line_items_table");
                 });
 
-            modelBuilder.Entity("Stranka", b =>
+            modelBuilder.Entity("InvoiceApiProject.Models.Invoice", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasColumnName("id");
+                    b.HasOne("Client", "Client")
+                        .WithMany()
+                        .HasForeignKey("ClientId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("Ime")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)")
-                        .HasColumnName("ime");
-
-                    b.Property<string>("Naslov")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)")
-                        .HasColumnName("naslov");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("stranka_table");
-                });
-
-            modelBuilder.Entity("InvoiceApiProject.Models.Racun", b =>
-                {
-                    b.HasOne("InvoiceApiProject.Models.Organizacija", "Organizacija")
+                    b.HasOne("InvoiceApiProject.Models.Organisation", "Organisation")
                         .WithMany()
                         .HasForeignKey("OrgId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Stranka", "Stranka")
-                        .WithMany()
-                        .HasForeignKey("StrankaId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                    b.Navigation("Client");
 
-                    b.Navigation("Organizacija");
-
-                    b.Navigation("Stranka");
+                    b.Navigation("Organisation");
                 });
 
-            modelBuilder.Entity("RacunVrstica", b =>
+            modelBuilder.Entity("LineItem", b =>
                 {
-                    b.HasOne("InvoiceApiProject.Models.Artikel", "Artikel")
+                    b.HasOne("InvoiceApiProject.Models.Article", "Article")
                         .WithMany()
-                        .HasForeignKey("ArtikelId")
+                        .HasForeignKey("ArticlelId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("InvoiceApiProject.Models.Racun", "Racun")
+                    b.HasOne("InvoiceApiProject.Models.Invoice", "Invoice")
                         .WithMany("LineItems")
-                        .HasForeignKey("RacunId")
+                        .HasForeignKey("InvoiceId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Artikel");
+                    b.Navigation("Article");
 
-                    b.Navigation("Racun");
+                    b.Navigation("Invoice");
                 });
 
-            modelBuilder.Entity("InvoiceApiProject.Models.Racun", b =>
+            modelBuilder.Entity("InvoiceApiProject.Models.Invoice", b =>
                 {
                     b.Navigation("LineItems");
                 });

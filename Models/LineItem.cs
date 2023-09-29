@@ -4,8 +4,8 @@ using System.Text.Json.Serialization;
 using InvoiceApiProject.Models;
 
 
-[Table("line_items")]
-public class RacunVrstica
+[Table("line_items_table")]
+public class LineItem
 {
     [Key]
     [Column("id")]
@@ -13,15 +13,14 @@ public class RacunVrstica
 
     [Required(ErrorMessage = "Quantity is required.")]
     [Column("quantity")]
-    public int Kolicina { get; set; }
-    [ForeignKey("Racun")]
+    public int Quantity { get; set; }
+    [ForeignKey("Invoice")]
     [Column("invoice_id")]
-    public int RacunId { get; set; }
+    public int InvoiceId { get; set; }
     [JsonIgnore]
-    public Racun? Racun { get; set; }   
-    [ForeignKey("Artikel")]
+    public Invoice? Invoice { get; set; }   
+    [ForeignKey("Article")]
     [Column("article_id")]
-    public int ArtikelId { get; set; }
-    public Artikel? Artikel { get; set; }
+    public int ArticleId { get; set; }
 }
 

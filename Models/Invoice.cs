@@ -2,8 +2,8 @@ namespace InvoiceApiProject.Models;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-[Table("racuni_table")]
-public class Racun  {
+[Table("invoice_table")]
+public class Invoice  {
     [Key]
     [Column("id")]
     public int Id {get; set;}
@@ -11,16 +11,16 @@ public class Racun  {
     [Column("date_of_creation")]
     public required DateTime DateOfCreation { get; set; }
     [Required(ErrorMessage = "znesek je obvezen.")]
-    [Column("znesek")]
-    public required float Znesek { get; set; }
+    [Column("price")]
+    public required float Price { get; set; }
     [ForeignKey("OrgId")]
     [Column("org_id")]
     public int OrgId {get; set;}
-    [ForeignKey("Stranka")]
-    [Column("stranka_id")]
-    public int StrankaId { get; set; }
-    public virtual ICollection<RacunVrstica> LineItems { get; set; } // Add this navigation property
+    [ForeignKey("Client")]
+    [Column("client_id")]
+    public int ClientId { get; set; }
+    public virtual ICollection<LineItem> LineItems { get; set; } // Add this navigation property
 
-    public Stranka? Stranka { get; set; }
-    public Organizacija? Organizacija {get; set;}
+    public Client? Client { get; set; }
+    public Organisation? Organisation {get; set;}
 }
