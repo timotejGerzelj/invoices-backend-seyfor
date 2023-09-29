@@ -10,7 +10,9 @@ var MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
+// Ker nisem bil siguren kaksen CORS zelite sem kar omogocil dostop
+// Vsem metodam ni dobra praksa in ne bi je uporabil v pravem projektu
+// vendar sem za vsak slucaj jo tako nastavil tukaj
 builder.Services.AddCors(options =>
 {
     options.AddPolicy(name: MyAllowSpecificOrigins,

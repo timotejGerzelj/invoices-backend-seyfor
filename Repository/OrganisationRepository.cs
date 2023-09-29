@@ -1,12 +1,13 @@
 using InvoiceApiProject.Interfaces;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using AutoMapper;
 using InvoiceApiProject.Models;
 using InvoiceApiProject.Data;
-
+/* 
+    Za organizacijo sem domneval, da je ena sama v bazi podatkov,
+    saj navodila je niso veliko omenjale (niti ali jo je treba vnesti ali ne)
+    zato je vsak ustvarjen racun vezan na eno in edino vrstico
+*/
 namespace InvoiceApiProject.Repositories
 {
     public class OrganisationRepository : IOrganisationRepository // Implement the interface

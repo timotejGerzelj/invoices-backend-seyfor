@@ -4,10 +4,6 @@ using InvoiceApiProject.Data;
 using AutoMapper;
 using InvoiceApiProject.DTOs;
 using InvoiceApiProject.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using InvoiceApiProject.Interfaces;
 
 namespace InvoiceApiProject.Controllers

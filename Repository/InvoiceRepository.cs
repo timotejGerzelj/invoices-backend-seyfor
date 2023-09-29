@@ -3,7 +3,16 @@ using InvoiceApiProject.Interfaces;
 using InvoiceApiProject.Models;
 using Microsoft.EntityFrameworkCore;
 
+/*
+    Veliko sem razmisljal ali naloga od mene zeli
+    popolno CRUD implementacijo ali ne, na koncu sem zaradi
+    mojih izkusenj v tajnistvu odlocil, da najverjetneje ne (vsaj pri nas jih nismo brisali)
 
+    Veliko sem razmisljal o temu da bi implementiral, 
+    vecjo odvisnost na racune, torej da bi racun imel reference za prakticno vse tabele,
+    na ta nacin bi lahko skoraj imel samo ta repository, vendar sem se odlocil,
+    da za v prihodnosti ne bi bilo zelo prakticno uporabljati taksno kodo.
+*/
 namespace InvoiceApiProject.Repositories
 {
 public class InvoiceRepository : IInvoiceRepository

@@ -3,7 +3,10 @@ using InvoiceApiProject.Data;
 using InvoiceApiProject.Interfaces;
 using Microsoft.EntityFrameworkCore;
 
-
+/*
+    Na zacetku sem zelel LineItem kar popolnoma vezati 
+    na Invoice vendar sem skozi cas opazil kako neprakticno je bilo 
+*/
 namespace InvoiceApiProject.Repositories
 {
 public class LineItemRepository : ILineItemRepository
@@ -43,7 +46,8 @@ public class LineItemRepository : ILineItemRepository
         return await _context.SaveChangesAsync() > 0;
     }
 
-
+    // Metoda za ustvarjanje več LineItem vrstic hkrati v podatkovni bazi.
+    // Uporablja se ko se ustvari popolnoma nov racun z vec vnesenimi vrsticami.
     public async Task<bool> CreateMultipleLineItemsAsync(IEnumerable<LineItem> lineItems)
     {
         _context.LineItems.AddRange(lineItems);

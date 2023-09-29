@@ -1,6 +1,6 @@
-# Aplikacija za upravljanje opravil v Angularju
+# Aplikacija za upravljanje racunov v .Net
 
-Preprosta spletna aplikacija v Angularju za upravljanje opravil, ustvarjena za izziv ToDoApp v podjetju Comland!
+Preprosta spletna aplikacija v C# .Net za upravljanje racunov, ustvarjena za izziv InvoiceApp v podjetju Seyfor!
 
 ## Kazalo vsebine
 - [Motivacija](#motivacija)
