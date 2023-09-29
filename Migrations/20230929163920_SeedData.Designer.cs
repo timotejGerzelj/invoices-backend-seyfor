@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace InvoiceApiProject.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20230928094441_firstBuild")]
-    partial class firstBuild
+    [Migration("20230929163920_SeedData")]
+    partial class SeedData
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -139,21 +139,19 @@ namespace InvoiceApiProject.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int>("ArticlelId")
+                    b.Property<int>("ArticleId")
                         .HasColumnType("int")
                         .HasColumnName("article_id");
-
-                    b.Property<int>("Quantity")
-                        .HasColumnType("int")
-                        .HasColumnName("quantity");
 
                     b.Property<int>("InvoiceId")
                         .HasColumnType("int")
                         .HasColumnName("invoice_id");
 
-                    b.HasKey("Id");
+                    b.Property<int>("Quantity")
+                        .HasColumnType("int")
+                        .HasColumnName("quantity");
 
-                    b.HasIndex("ArticlelId");
+                    b.HasKey("Id");
 
                     b.HasIndex("InvoiceId");
 
@@ -181,19 +179,11 @@ namespace InvoiceApiProject.Migrations
 
             modelBuilder.Entity("LineItem", b =>
                 {
-                    b.HasOne("InvoiceApiProject.Models.Article", "Article")
-                        .WithMany()
-                        .HasForeignKey("ArticlelId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("InvoiceApiProject.Models.Invoice", "Invoice")
                         .WithMany("LineItems")
                         .HasForeignKey("InvoiceId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.Navigation("Article");
 
                     b.Navigation("Invoice");
                 });

@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace InvoiceApiProject.Migrations
 {
     /// <inheritdoc />
-    public partial class firstBuild : Migration
+    public partial class FirstMigration : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -95,12 +95,6 @@ namespace InvoiceApiProject.Migrations
                 {
                     table.PrimaryKey("PK_line_items_table", x => x.id);
                     table.ForeignKey(
-                        name: "FK_line_items_table_articles_table_article_id",
-                        column: x => x.article_id,
-                        principalTable: "articles_table",
-                        principalColumn: "id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
                         name: "FK_line_items_table_invoice_table_invoice_id",
                         column: x => x.invoice_id,
                         principalTable: "invoice_table",
@@ -119,11 +113,6 @@ namespace InvoiceApiProject.Migrations
                 column: "org_id");
 
             migrationBuilder.CreateIndex(
-                name: "IX_line_items_table_article_id",
-                table: "line_items_table",
-                column: "article_id");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_line_items_table_invoice_id",
                 table: "line_items_table",
                 column: "invoice_id");
@@ -133,10 +122,10 @@ namespace InvoiceApiProject.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "line_items_table");
+                name: "articles_table");
 
             migrationBuilder.DropTable(
-                name: "articles_table");
+                name: "line_items_table");
 
             migrationBuilder.DropTable(
                 name: "invoice_table");

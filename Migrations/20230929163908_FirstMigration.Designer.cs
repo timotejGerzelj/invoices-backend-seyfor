@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace InvoiceApiProject.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20230928114319_UpdateArticle")]
-    partial class UpdateArticle
+    [Migration("20230929163908_FirstMigration")]
+    partial class FirstMigration
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -139,23 +139,21 @@ namespace InvoiceApiProject.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int>("ArticlelId")
+                    b.Property<int>("ArticleId")
                         .HasColumnType("int")
                         .HasColumnName("article_id");
+
+                    b.Property<int>("InvoiceId")
+                        .HasColumnType("int")
+                        .HasColumnName("invoice_id");
 
                     b.Property<int>("Quantity")
                         .HasColumnType("int")
                         .HasColumnName("quantity");
 
-                    b.Property<int>("RacunId")
-                        .HasColumnType("int")
-                        .HasColumnName("invoice_id");
-
                     b.HasKey("Id");
 
-                    b.HasIndex("ArticlelId");
-
-                    b.HasIndex("RacunId");
+                    b.HasIndex("InvoiceId");
 
                     b.ToTable("line_items_table");
                 });
@@ -181,21 +179,13 @@ namespace InvoiceApiProject.Migrations
 
             modelBuilder.Entity("LineItem", b =>
                 {
-                    b.HasOne("InvoiceApiProject.Models.Article", "Article")
-                        .WithMany()
-                        .HasForeignKey("ArticlelId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("InvoiceApiProject.Models.Invoice", "Racun")
+                    b.HasOne("InvoiceApiProject.Models.Invoice", "Invoice")
                         .WithMany("LineItems")
-                        .HasForeignKey("RacunId")
+                        .HasForeignKey("InvoiceId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Article");
-
-                    b.Navigation("Racun");
+                    b.Navigation("Invoice");
                 });
 
             modelBuilder.Entity("InvoiceApiProject.Models.Invoice", b =>
