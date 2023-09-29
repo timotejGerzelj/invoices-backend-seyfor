@@ -157,28 +157,6 @@ namespace InvoiceApiProject.Controllers
             return Ok(lineItemDtos);
         }
 
-        // DELETE: api/Invoice/5
-        [HttpDelete("{id}")]
-        [ProducesResponseType(204)]
-        [ProducesResponseType(400)]
-        public async Task<IActionResult> DeleteInvoice(int id)
-        {
-            if (_context.Invoices == null)
-            {
-                return NotFound();
-            }
-
-            var invoice = await _invoiceRepository.GetInvoiceByIdAsync(id);
-
-            if (invoice == null)
-            {
-                return NotFound();
-            }
-
-            await _invoiceRepository.DeleteInvoiceAsync(invoice.Id);
-
-            return NoContent();
-        }
         [HttpGet("{id}/LineItem")]
         public async Task<ActionResult<IEnumerable<LineItem>>> GetRacunLineItemById(int id)
         {

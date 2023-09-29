@@ -43,14 +43,6 @@ public class LineItemRepository : ILineItemRepository
         return await _context.SaveChangesAsync() > 0;
     }
 
-    public async Task<bool> DeleteLineItemAsync(int id)
-    {
-        var lineItem = await GetLineItemByIdAsync(id);
-        if (lineItem == null) return false;
-
-        _context.LineItems.Remove(lineItem);
-        return await _context.SaveChangesAsync() > 0;
-    }
 
     public async Task<bool> CreateMultipleLineItemsAsync(IEnumerable<LineItem> lineItems)
     {

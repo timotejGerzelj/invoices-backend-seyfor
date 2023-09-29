@@ -134,36 +134,6 @@ namespace InvoiceApiProject.Controllers
             }
         }
 
-        // DELETE: api/LineItem/5
-        [HttpDelete("{id}")]
-        [ProducesResponseType(400)]
-        [ProducesResponseType(204)]
-        [ProducesResponseType(404)]
-        public async Task<IActionResult> DeleteLineItem(int id)
-        {
-            if (_context.LineItems == null)
-            {
-                return NotFound();
-            }
-
-            var lineItem = await _lineItemRepository.GetLineItemByIdAsync(id);
-
-            if (lineItem == null)
-            {
-                return NotFound();
-            }
-            if (!ModelState.IsValid)
-                return BadRequest(ModelState);
-
-            var lineItemToDelete = await _lineItemRepository.DeleteLineItemAsync(lineItem.Id);
-            if (lineItemToDelete)
-            {
-                ModelState.AddModelError("", "Something went wrong deleting owner");
-            }
-
-            return NoContent();
-        }
-
         // POST: api/LineItem/Multiple
         [HttpPost("Multiple")]
         [ProducesResponseType(204)]

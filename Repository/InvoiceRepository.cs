@@ -74,17 +74,7 @@ public async Task<bool> UpdateInvoiceAsync(int id, Invoice invoice)
 
     return true;
 }
-
-
-    public async Task<bool> DeleteInvoiceAsync(int id)
-    {
-        var invoice = await GetInvoiceByIdAsync(id);
-        if (invoice == null) return false;
-
-        _context.Invoices.Remove(invoice);
-        return await _context.SaveChangesAsync() > 0;
-    }
-    public bool Save()
+public bool Save()
         {
             var saved = _context.SaveChanges();
             return saved > 0 ? true : false;

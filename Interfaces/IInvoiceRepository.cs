@@ -7,6 +7,5 @@ public interface IInvoiceRepository {
     Task<bool> CreateInvoiceAsync(Invoice invoice);
     Task<IEnumerable<LineItem>> GetInvoiceLineItemsAsync(int invoiceId);
     Task<bool> UpdateInvoiceAsync(int id, Invoice invoice);
-    Task<bool> DeleteInvoiceAsync(int id);
     }
 }
